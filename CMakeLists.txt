@@ -25,6 +25,12 @@ if(CONFIG_ZMK_RUNTIME_SENSOR_ROTATE)
 
         # app should depend on the generated proto files
         target_include_directories(app PUBLIC ${CMAKE_CURRENT_BINARY_DIR}/proto)
+        # nanopb library headers (pb_decode.h, pb_encode.h) needed by custom_handler.c
+        if(DEFINED ZEPHYR_NANOPB_MODULE_DIR)
+            target_include_directories(app PUBLIC ${ZEPHYR_NANOPB_MODULE_DIR})
+        elseif(DEFINED NANOPB_DIR)
+            target_include_directories(app PUBLIC ${NANOPB_DIR})
+        endif()
         add_dependencies(app ${ZEPHYR_CURRENT_LIBRARY})
     endif()
 endif()
